@@ -1,28 +1,40 @@
 using UnityEngine;
 using RPG.Movement;
+using RPG.Core;
 
 namespace RPG.Combat
 {
-    public class Fighter : MonoBehaviour
+    public class Fighter : MonoBehaviour,IAction
     {
         [SerializeField] float weaponRange = 2f;
 
         Transform target; 
 
-        private void Update() {
-            bool isInRange = Vector3.Distance(transform.position, target.position) < weaponRange;
-            if (target != null && !isInRange)
+        private void Update()
+        {
+            if (target == null) return;
+            if (target != null && !IsInRange())
             {
                 GetComponent<Mover>().MoveTo(target.position);
             }
             else
             {
-                GetComponent<Mover>().Stop();
+                GetComponent<Mover>().Cancel();
             }
         }
 
+        private bool IsInRange()
+        {
+            return Vector3.Distance(transform.position, target.position) < weaponRange;
+        }
+
+        public void Cancel()
+        {
+            target = null;
+        }
         public void Attack(CombatTarget combatTarget)
         {
+            GetComponent<ActionSchedular>().StartAction(this);
             target = combatTarget.transform;
         }
     }
