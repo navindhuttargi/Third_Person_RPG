@@ -7,8 +7,6 @@ namespace Movement
 {
     public class Mover : MonoBehaviour
     {
-        [SerializeField] Transform target;
-
         void Update()
         {
             UpdateAnimator();
