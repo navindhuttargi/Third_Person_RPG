@@ -19,6 +19,7 @@ namespace RPG.Combat
             }
             else
             {
+                GetComponent<Animator>().SetTrigger("attack");
                 GetComponent<Mover>().Cancel();
             }
         }
@@ -36,6 +37,10 @@ namespace RPG.Combat
         {
             GetComponent<ActionSchedular>().StartAction(this);
             target = combatTarget.transform;
+        }
+        private void Hit()
+        {
+
         }
     }
 }
