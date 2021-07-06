@@ -4,6 +4,11 @@ public class Health : MonoBehaviour
 {
     [SerializeField] float health = 20;
     bool isDead = false;
+    Animator animator;
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
     public bool IsDead()
     {
         return isDead;
@@ -23,6 +28,6 @@ public class Health : MonoBehaviour
         if (isDead)
             return;
         isDead = true;
-        GetComponent<Animator>().SetTrigger("die");
+        animator.SetTrigger("die");
     }
 }

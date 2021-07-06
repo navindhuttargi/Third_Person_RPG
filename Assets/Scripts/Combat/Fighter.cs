@@ -9,11 +9,21 @@ namespace RPG.Combat
         [SerializeField] float weaponRange = 2f;
         [SerializeField] float timeBeteenAttack=1;
         [SerializeField] float damage = 5;
+        
+        Animator animator;
+
+        Mover mover;
+        ActionSchedular actionSchedular;
 
         float elapsedAttackTime = 0;
 
-        Health target; 
-
+        Health target;
+        private void Start()
+        {
+            animator = GetComponent<Animator>();
+            mover = GetComponent<Mover>();
+            actionSchedular = GetComponent<ActionSchedular>();
+        }
         private void Update()
         {
             elapsedAttackTime += Time.deltaTime;
@@ -21,12 +31,12 @@ namespace RPG.Combat
             if (target.IsDead()) return;
             if (target != null && !IsInRange())
             {
-                GetComponent<Mover>().MoveTo(target.transform.position);
+                mover.MoveTo(target.transform.position);
             }
             else
             {
                 StartAttack();
-                GetComponent<Mover>().Cancel();
+                mover.Cancel();
             }
         }
 
@@ -42,8 +52,8 @@ namespace RPG.Combat
 
         private void TriggerAttack()
         {
-            GetComponent<Animator>().ResetTrigger("stopAttack");
-            GetComponent<Animator>().SetTrigger("attack");
+            animator.ResetTrigger("stopAttack");
+            animator.SetTrigger("attack");
         }
 
         public bool CanAttack(CombatTarget combatTarget)
@@ -66,13 +76,13 @@ namespace RPG.Combat
 
         private void TriggerStopAttack()
         {
-            GetComponent<Animator>().ResetTrigger("attack");
-            GetComponent<Animator>().SetTrigger("stopAttack");
+            animator.ResetTrigger("attack");
+            animator.SetTrigger("stopAttack");
         }
 
         public void Attack(CombatTarget combatTarget)
         {
-            GetComponent<ActionSchedular>().StartAction(this);
+            actionSchedular.StartAction(this);
             target = combatTarget.GetComponent<Health>();
         }
         private void Hit()
