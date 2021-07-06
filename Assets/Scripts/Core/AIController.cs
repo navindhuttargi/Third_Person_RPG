@@ -1,6 +1,8 @@
 ﻿using RPG.Combat;
+using RPG.Control;
 using RPG.Core;
 using RPG.Movement;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,8 +11,12 @@ public class AIController : MonoBehaviour
     [SerializeField] GameObject player;
     [SerializeField] float chaseDistance = 5;
     [SerializeField] float suspecionTime = 3;
-
+    [SerializeField] float patrolTolerence = 1;
+    [SerializeField] PatrolPath patrolPath;
+    
     float timeSinceLastSawPlayer = 0;
+
+    int currentWaypointIndex = 0;
 
     Fighter fighter;
     Health health;
@@ -18,6 +24,7 @@ public class AIController : MonoBehaviour
     ActionSchedular actionSchedular;
 
     Vector3 guardPosition;
+    Vector3 nextPosition;
     private void Start()
     {
         mover = GetComponent<Mover>();
@@ -40,14 +47,39 @@ public class AIController : MonoBehaviour
         }
         else
         {
-            GuardBehaviour();
+            PatrollingBehaviour();
         }
         timeSinceLastSawPlayer += Time.deltaTime;
     }
 
-    private void GuardBehaviour()
+    private void PatrollingBehaviour()
     {
-        mover.StartMovementAction(guardPosition);
+        nextPosition = guardPosition;
+        if (patrolPath != null)
+        {
+            if (AtWayPoint())
+            {
+                CycleWaypoint();
+            }
+            nextPosition = GetCurrentWayPoint();
+        }
+        mover.StartMovementAction(nextPosition);
+    }
+
+    private Vector3 GetCurrentWayPoint()
+    {
+        return patrolPath.GetWaypoint(currentWaypointIndex);
+    }
+
+    private void CycleWaypoint()
+    {
+        currentWaypointIndex = patrolPath.GetNextPoint(currentWaypointIndex);
+    }
+
+    private bool AtWayPoint()
+    {
+        float distance = Vector3.Distance(transform.position, GetCurrentWayPoint());
+        return distance < patrolTolerence;
     }
 
     private void SuspicionBehaviour()
