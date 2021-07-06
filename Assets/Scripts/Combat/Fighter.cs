@@ -32,6 +32,7 @@ namespace RPG.Combat
 
         private void StartAttack()
         {
+            transform.LookAt(target.transform.position, Vector3.up);
             if (elapsedAttackTime > timeBeteenAttack)
             {
                 elapsedAttackTime = 0;
