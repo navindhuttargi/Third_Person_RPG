@@ -15,7 +15,7 @@ namespace RPG.Combat
         Mover mover;
         ActionSchedular actionSchedular;
 
-        float elapsedAttackTime = 0;
+        float elapsedAttackTime = Mathf.Infinity;
 
         Health target;
         private void Start()

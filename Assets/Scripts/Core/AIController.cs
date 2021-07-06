@@ -1,29 +1,65 @@
 ﻿using RPG.Combat;
-using System.Collections;
-using System.Collections.Generic;
+using RPG.Core;
+using RPG.Movement;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class AIController : MonoBehaviour
 {
     [SerializeField] GameObject player;
-    [SerializeField] float attackRange = 5;
+    [SerializeField] float chaseDistance = 5;
+    [SerializeField] float suspecionTime = 3;
+
+    float timeSinceLastSawPlayer = 0;
+
     Fighter fighter;
+    Health health;
+    Mover mover;
+    ActionSchedular actionSchedular;
+
+    Vector3 guardPosition;
     private void Start()
     {
+        mover = GetComponent<Mover>();
+        health = GetComponent<Health>();
         fighter = GetComponent<Fighter>();
+        guardPosition = transform.position;
+        actionSchedular = GetComponent<ActionSchedular>();
     }
     private void Update()
     {
+        if (health.IsDead()) return;
         if (InAttackRangeOFPlayer() && fighter.CanAttack(player))
         {
-            fighter.Attack(player);
+            timeSinceLastSawPlayer = 0;
+            AttackBehaviour();
+        }
+        else if (timeSinceLastSawPlayer < suspecionTime)
+        {
+            SuspicionBehaviour();
         }
         else
         {
-            fighter.Cancel();
+            GuardBehaviour();
         }
+        timeSinceLastSawPlayer += Time.deltaTime;
     }
+
+    private void GuardBehaviour()
+    {
+        mover.StartMovementAction(guardPosition);
+    }
+
+    private void SuspicionBehaviour()
+    {
+        actionSchedular.CancelCurrentAction();
+    }
+
+    private void AttackBehaviour()
+    {
+        fighter.Attack(player);
+    }
+
     bool InAttackRangeOFPlayer()
     {
         float distance = Vector3.Distance(player.transform.position, transform.position);
@@ -31,6 +67,7 @@ public class AIController : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, 5);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, chaseDistance);
     }
 }
