@@ -447,6 +447,11 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1324464295}
+    - target: {fileID: 3872828073042411804, guid: 2f5efcfaabb812646b6074792cd87306,
+        type: 3}
+      propertyPath: dwellTime
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3979356082637968322, guid: 2f5efcfaabb812646b6074792cd87306,
         type: 3}
       propertyPath: m_Name
@@ -754,6 +759,11 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1324464295}
+    - target: {fileID: 3872828073042411804, guid: 2f5efcfaabb812646b6074792cd87306,
+        type: 3}
+      propertyPath: dwellTime
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3979356082637968322, guid: 2f5efcfaabb812646b6074792cd87306,
         type: 3}
       propertyPath: m_Name
@@ -1405,6 +1415,11 @@ PrefabInstance:
       propertyPath: patrolPath
       value: 
       objectReference: {fileID: 1517600539}
+    - target: {fileID: 3872828073042411804, guid: 2f5efcfaabb812646b6074792cd87306,
+        type: 3}
+      propertyPath: dwellTime
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3979356082637968322, guid: 2f5efcfaabb812646b6074792cd87306,
         type: 3}
       propertyPath: m_Name
