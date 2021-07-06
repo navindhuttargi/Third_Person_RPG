@@ -36,9 +36,16 @@ namespace RPG.Combat
             if (elapsedAttackTime > timeBeteenAttack)
             {
                 elapsedAttackTime = 0;
-                GetComponent<Animator>().SetTrigger("attack");
+                TriggerAttack();
             }
         }
+
+        private void TriggerAttack()
+        {
+            GetComponent<Animator>().ResetTrigger("stopAttack");
+            GetComponent<Animator>().SetTrigger("attack");
+        }
+
         public bool CanAttack(CombatTarget combatTarget)
         {
             if (combatTarget == null)
@@ -54,8 +61,15 @@ namespace RPG.Combat
         public void Cancel()
         {
             target = null;
+            TriggerStopAttack();
+        }
+
+        private void TriggerStopAttack()
+        {
+            GetComponent<Animator>().ResetTrigger("attack");
             GetComponent<Animator>().SetTrigger("stopAttack");
         }
+
         public void Attack(CombatTarget combatTarget)
         {
             GetComponent<ActionSchedular>().StartAction(this);
