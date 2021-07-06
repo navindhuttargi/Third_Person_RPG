@@ -8,6 +8,7 @@ namespace RPG.Combat
     {
         [SerializeField] float weaponRange = 2f;
         [SerializeField] float timeBeteenAttack=1;
+        [SerializeField] float damage = 5;
 
         float elapsedAttackTime = 0;
 
@@ -53,7 +54,7 @@ namespace RPG.Combat
         }
         private void Hit()
         {
-
+            target.GetComponent<Health>().TakeDamage(damage);
         }
     }
 }
