@@ -12,9 +12,11 @@ public class AIController : MonoBehaviour
     [SerializeField] float chaseDistance = 5;
     [SerializeField] float suspecionTime = 3;
     [SerializeField] float patrolTolerence = 1;
+    [SerializeField] float dwellTime = 1.5f;
     [SerializeField] PatrolPath patrolPath;
     
-    float timeSinceLastSawPlayer = 0;
+    float timeSinceLastSawPlayer = 1.5f;
+    float timeSinceArriveAtWaypoint = Mathf.Infinity;
 
     int currentWaypointIndex = 0;
 
@@ -38,7 +40,6 @@ public class AIController : MonoBehaviour
         if (health.IsDead()) return;
         if (InAttackRangeOFPlayer() && fighter.CanAttack(player))
         {
-            timeSinceLastSawPlayer = 0;
             AttackBehaviour();
         }
         else if (timeSinceLastSawPlayer < suspecionTime)
@@ -49,7 +50,13 @@ public class AIController : MonoBehaviour
         {
             PatrollingBehaviour();
         }
+        UpdateTimers();
+    }
+
+    private void UpdateTimers()
+    {
         timeSinceLastSawPlayer += Time.deltaTime;
+        timeSinceArriveAtWaypoint += Time.deltaTime;
     }
 
     private void PatrollingBehaviour()
@@ -59,11 +66,13 @@ public class AIController : MonoBehaviour
         {
             if (AtWayPoint())
             {
+                timeSinceArriveAtWaypoint = 0;
                 CycleWaypoint();
             }
             nextPosition = GetCurrentWayPoint();
         }
-        mover.StartMovementAction(nextPosition);
+        if (timeSinceArriveAtWaypoint > dwellTime)
+            mover.StartMovementAction(nextPosition);
     }
 
     private Vector3 GetCurrentWayPoint()
@@ -89,6 +98,7 @@ public class AIController : MonoBehaviour
 
     private void AttackBehaviour()
     {
+        timeSinceLastSawPlayer = 0;
         fighter.Attack(player);
     }
 
