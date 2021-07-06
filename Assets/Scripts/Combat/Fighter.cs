@@ -39,7 +39,13 @@ namespace RPG.Combat
                 GetComponent<Animator>().SetTrigger("attack");
             }
         }
-
+        public bool CanAttack(CombatTarget combatTarget)
+        {
+            if (combatTarget == null)
+                return false;
+            Health targetToTest = combatTarget.GetComponent<Health>();
+            return targetToTest != null && !targetToTest.IsDead();
+        }
         private bool IsInRange()
         {
             return Vector3.Distance(transform.position, target.transform.position) < weaponRange;
