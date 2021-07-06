@@ -12,15 +12,16 @@ namespace RPG.Combat
 
         float elapsedAttackTime = 0;
 
-        Transform target; 
+        Health target; 
 
         private void Update()
         {
             elapsedAttackTime += Time.deltaTime;
             if (target == null) return;
+            if (target.IsDead()) return;
             if (target != null && !IsInRange())
             {
-                GetComponent<Mover>().MoveTo(target.position);
+                GetComponent<Mover>().MoveTo(target.transform.position);
             }
             else
             {
@@ -40,21 +41,23 @@ namespace RPG.Combat
 
         private bool IsInRange()
         {
-            return Vector3.Distance(transform.position, target.position) < weaponRange;
+            return Vector3.Distance(transform.position, target.transform.position) < weaponRange;
         }
 
         public void Cancel()
         {
             target = null;
+            GetComponent<Animator>().SetTrigger("stopAttack");
         }
         public void Attack(CombatTarget combatTarget)
         {
             GetComponent<ActionSchedular>().StartAction(this);
-            target = combatTarget.transform;
+            target = combatTarget.GetComponent<Health>();
         }
         private void Hit()
         {
-            target.GetComponent<Health>().TakeDamage(damage);
+            if(target!=null)
+            target.TakeDamage(damage);
         }
     }
 }
