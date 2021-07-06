@@ -1,18 +1,36 @@
-﻿using System.Collections;
+﻿using RPG.Combat;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AIController : MonoBehaviour
 {
-    [SerializeField]Transform player;
-    [SerializeField] float chaseDistance = 5;
+    [SerializeField] GameObject player;
+    [SerializeField] float attackRange = 5;
+    Fighter fighter;
+    private void Start()
+    {
+        fighter = GetComponent<Fighter>();
+    }
     private void Update()
     {
-        if (IsInRange())
-            Debug.Log(transform.name + ": follow player");
+        if (InAttackRangeOFPlayer() && fighter.CanAttack(player))
+        {
+            fighter.Attack(player);
+        }
+        else
+        {
+            fighter.Cancel();
+        }
     }
-    bool IsInRange()
+    bool InAttackRangeOFPlayer()
     {
-        return Vector3.Distance(player.position, transform.position) < 5;
+        float distance = Vector3.Distance(player.transform.position, transform.position);
+        return distance < 5;
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, 5);
     }
 }
