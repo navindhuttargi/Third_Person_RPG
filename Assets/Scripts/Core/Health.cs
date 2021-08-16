@@ -1,37 +1,34 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace RPG.Core
 {
     public class Health : MonoBehaviour
     {
-        [SerializeField] float health = 20;
+        [SerializeField] float healthPoints = 100f;
+
         bool isDead = false;
-        Animator animator;
-        private void Start()
-        {
-            animator = GetComponent<Animator>();
-        }
+
         public bool IsDead()
         {
             return isDead;
         }
+
         public void TakeDamage(float damage)
         {
-            health = Mathf.Max(health - damage, 0);
-            if (health == 0)
+            healthPoints = Mathf.Max(healthPoints - damage, 0);
+            if(healthPoints == 0)
             {
-                TriggerDieAnimation();
+                Die();
             }
-            
         }
 
-        private void TriggerDieAnimation()
+        private void Die()
         {
-            if (isDead)
-                return;
+            if (isDead) return;
+
             isDead = true;
-            animator.SetTrigger("die");
-            GetComponent<ActionSchedular>().CancelCurrentAction();
+            GetComponent<Animator>().SetTrigger("die");
+            GetComponent<ActionScheduler>().CancelCurrentAction();
         }
     }
 }

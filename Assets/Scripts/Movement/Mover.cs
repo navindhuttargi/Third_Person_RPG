@@ -1,35 +1,36 @@
-﻿using RPG.Core;
+﻿using System.Collections;
+using System.Collections.Generic;
+using RPG.Core;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace RPG.Movement
 {
-    public class Mover : MonoBehaviour,IAction
+    public class Mover : MonoBehaviour, IAction
     {
         [SerializeField] Transform target;
 
         NavMeshAgent navMeshAgent;
-        ActionSchedular actionSchedular;
-        Animator animator;
         Health health;
 
         private void Start() {
-            actionSchedular = GetComponent<ActionSchedular>();
-            health = GetComponent<Health>();
             navMeshAgent = GetComponent<NavMeshAgent>();
-            animator = GetComponent<Animator>();
+            health = GetComponent<Health>();
         }
 
         void Update()
         {
             navMeshAgent.enabled = !health.IsDead();
+
             UpdateAnimator();
         }
-        public void StartMovementAction(Vector3 destination)
+
+        public void StartMoveAction(Vector3 destination)
         {
-            actionSchedular.StartAction(this);
+            GetComponent<ActionScheduler>().StartAction(this);
             MoveTo(destination);
         }
+
         public void MoveTo(Vector3 destination)
         {
             navMeshAgent.destination = destination;
@@ -46,7 +47,7 @@ namespace RPG.Movement
             Vector3 velocity = navMeshAgent.velocity;
             Vector3 localVelocity = transform.InverseTransformDirection(velocity);
             float speed = localVelocity.z;
-            animator.SetFloat("forwardSpeed", speed);
+            GetComponent<Animator>().SetFloat("forwardSpeed", speed);
         }
     }
 }
