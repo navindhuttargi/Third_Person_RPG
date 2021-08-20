@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3125957438692005694}
   - component: {fileID: 7346836368589747626}
   - component: {fileID: 3307795589981818629}
-  - component: {fileID: 8067119963638078894}
+  - component: {fileID: -1186922781673146546}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -52,6 +52,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -63,6 +64,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -170,7 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoints: 100
---- !u!114 &8067119963638078894
+--- !u!114 &-1186922781673146546
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -179,7 +181,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 5401972681186859721}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ea9374b509b70f4bba37e4a2ca8cf00, type: 3}
+  m_Script: {fileID: 11500000, guid: fb572f354452ad74491cf2cb4d3721e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueIdentifier: 

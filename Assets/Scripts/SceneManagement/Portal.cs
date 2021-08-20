@@ -1,3 +1,4 @@
+using RPG.Saving;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -41,17 +42,13 @@ namespace RPG.SceneManagement
             
             yield return fader.FadeOut(fadeOutTime);
 
-            SavingWrapper wrapper = FindObjectOfType<SavingWrapper>();
-            wrapper.Save();
-
+            SavingWrapper savingWrapper = FindObjectOfType<SavingWrapper>();
+            savingWrapper.Save();
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
-
-            wrapper.Load();
-            
+            savingWrapper.Load();
             Portal otherPortal = GetOtherPortal();
             UpdatePlayer(otherPortal);
-
-            wrapper.Save();
+            savingWrapper.Save();
             yield return new WaitForSeconds(fadeWaitTime);
             yield return fader.FadeIn(fadeInTime);
 
