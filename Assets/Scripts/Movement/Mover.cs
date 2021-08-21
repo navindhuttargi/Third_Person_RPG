@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 namespace RPG.Movement
 {
-    public class Mover : MonoBehaviour, IAction,ISaveable
+    public class Mover : MonoBehaviour, IAction, ISaveable
     {
         [SerializeField] Transform target;
         [SerializeField] float maxSpeed = 6f;
@@ -60,9 +60,9 @@ namespace RPG.Movement
 
         public void RestoreState(object state)
         {
-            SerializableVector3 serializableVector3 = (SerializableVector3)state;
+            SerializableVector3 position = (SerializableVector3)state;
             GetComponent<NavMeshAgent>().enabled = false;
-            transform.position = serializableVector3.ToVector();
+            transform.position = position.ToVector();
             GetComponent<NavMeshAgent>().enabled = true;
             GetComponent<ActionScheduler>().CancelCurrentAction();
         }
