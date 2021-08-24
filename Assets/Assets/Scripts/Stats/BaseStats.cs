@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,8 +11,9 @@ namespace RPG.Stats
         [SerializeField] int startingLevel = 1;
         [SerializeField] CharacterClass characterClass;
         [SerializeField] Progression progression = null;
-
+        [SerializeField] GameObject levelUpPrefab;
         int currentLevel = 0;
+        public event Action healthRegeneration;
 
         private void Start() 
         {
@@ -29,9 +31,12 @@ namespace RPG.Stats
             if (newLevel > currentLevel)
             {
                 currentLevel = newLevel;
+                LevelUpEffect();
+                healthRegeneration?.Invoke();
                 print("Levelled Up!");
             }
         }
+
 
         public float GetStat(Stat stat)
         {
@@ -64,6 +69,10 @@ namespace RPG.Stats
             }
 
             return penultimateLevel + 1;
+        }
+        private void LevelUpEffect()
+        {
+            Instantiate(levelUpPrefab, transform);
         }
     }
 }
